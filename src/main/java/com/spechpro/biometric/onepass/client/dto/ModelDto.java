@@ -21,8 +21,8 @@ public class ModelDto {
     @JsonCreator()
     public ModelDto(@JsonProperty("id") int id,
                     @JsonProperty("type") String type,
-                    @JsonProperty("passwordPhrases") List<String> passwordPhrases,
-                    @JsonProperty("samplesCount") int samplesCount){
+                    @JsonProperty("password_phrases") List<String> passwordPhrases,
+                    @JsonProperty("samples_count") int samplesCount){
         this.id = id;
         this.modelType = type;
         this.passwordPhrases = passwordPhrases;

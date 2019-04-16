@@ -21,12 +21,17 @@ public class GetPersonResponseDto {
     @JsonProperty
     public String id;
 
+    @JsonProperty
+    public boolean isDeleted;
+
     @JsonCreator
-    public GetPersonResponseDto(@JsonProperty("isFullEnroll") boolean isFullEnroll,
+    public GetPersonResponseDto(@JsonProperty("is_full_enroll") boolean isFullEnroll,
                                 @JsonProperty("id") String id,
-                                @JsonProperty("models") List<ModelDto> models){
+                                @JsonProperty("models") List<ModelDto> models,
+                                @JsonProperty("is_deleted") boolean isDeleted){
         this.isFullEnroll = isFullEnroll;
         this.id = id;
         this.models = models;
+        this.isDeleted = isDeleted;
     }
 }

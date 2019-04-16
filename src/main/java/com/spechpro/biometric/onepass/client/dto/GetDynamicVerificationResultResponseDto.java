@@ -11,12 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GetDynamicVerificationResultResponseDto {
 
-
     @JsonProperty
     public double score;
 
     @JsonCreator
-    public GetDynamicVerificationResultResponseDto(@JsonProperty("dynamicVoice") double score) {
+    public GetDynamicVerificationResultResponseDto(@JsonProperty("dynamic_voice") double score) {
         this.score = score;
     }
 }

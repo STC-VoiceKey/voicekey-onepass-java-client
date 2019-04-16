@@ -10,15 +10,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StartDynamicVerificationRequestDto {
 
-        @JsonProperty
+        @JsonProperty("password")
         public String password;
 
-        @JsonProperty
+        @JsonProperty("transaction_id")
         public String transactionId;
 
         @JsonCreator
         public StartDynamicVerificationRequestDto(@JsonProperty("password") String password,
-                                                  @JsonProperty("transactionId") String transactionId) {
+                                                  @JsonProperty("transaction_id") String transactionId) {
             this.password = password;
             this.transactionId = transactionId;
         }

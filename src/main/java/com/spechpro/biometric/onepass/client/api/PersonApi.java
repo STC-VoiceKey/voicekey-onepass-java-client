@@ -2,6 +2,7 @@ package com.spechpro.biometric.onepass.client.api;
 
 import com.spechpro.biometric.onepass.client.dto.*;
 import com.spechpro.biometric.onepass.client.exceptions.ExceptionMapper;
+import com.spechpro.biometric.onepass.client.exceptions.OnePassClientException;
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -38,12 +39,13 @@ public class PersonApi {
      * Checks if person exists in biometric system
      * @return true if person exists
      */
-    public boolean exists() {
+    public boolean exists() throws OnePassClientException {
         boolean result = false;
         try (CloseableHttpResponse response = OnePassRestClient.get().getPerson(personId,
                 new Header[]{new BasicHeader("X-Session-Id", sessionId)})) {
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                result = true;
+                GetPersonResponseDto personDto = DtoHelper.create(response.getEntity().getContent(), GetPersonResponseDto.class);
+                result = !personDto.isDeleted;
                 LOGGER.info(String.format("Person with personId %s exists", personId));
             } else if (response.getStatusLine().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 LOGGER.info(String.format("Person with personId %s does not exists", personId));
@@ -62,7 +64,7 @@ public class PersonApi {
      * Checks if person fully enrolled in biometric system
      * @return true if person fully enrolled in biometric system
      */
-    public boolean isFullEnrolled() {
+    public boolean isFullEnrolled() throws OnePassClientException {
         boolean result = false;
         try (CloseableHttpResponse response = OnePassRestClient.get().getPerson(personId,
                 new Header[]{new BasicHeader("X-Session-Id", sessionId)})) {
@@ -82,7 +84,7 @@ public class PersonApi {
     /**
      * @return number of dynamic voice models
      */
-    public int getDynamicModelsNumber() {
+    public int getDynamicModelsNumber() throws OnePassClientException {
         int result = 0;
         try (CloseableHttpResponse response = OnePassRestClient.get().getPerson(personId,
                 new Header[]{new BasicHeader("X-Session-Id", sessionId)})) {
@@ -108,7 +110,7 @@ public class PersonApi {
     /**
      * @return number of static voice models
      */
-    public int getStaticModelsNumber() {
+    public int getStaticModelsNumber() throws OnePassClientException {
         int result = 0;
         try (CloseableHttpResponse response = OnePassRestClient.get().getPerson(personId,
                 new Header[]{new BasicHeader("X-Session-Id", sessionId)})) {
@@ -134,7 +136,7 @@ public class PersonApi {
     /**
      * @return number of face models
      */
-    public int getFaceModelsNumber() {
+    public int getFaceModelsNumber() throws OnePassClientException {
         int result = 0;
         try (CloseableHttpResponse response = OnePassRestClient.get().getPerson(personId,
                 new Header[]{new BasicHeader("X-Session-Id", sessionId)})) {
@@ -161,7 +163,7 @@ public class PersonApi {
      * Deletes person from biometric system
      * @return true if person deleted successfully
      */
-    public boolean delete() {
+    public boolean delete() throws OnePassClientException {
         boolean deleted = false;
         try (CloseableHttpResponse response = OnePassRestClient.get().deletePerson(personId,
                 new Header[]{new BasicHeader("X-Session-Id", sessionId)})) {
@@ -191,7 +193,7 @@ public class PersonApi {
      * @param sessionId session identifier
      * @return VerificationApi object with verification operations
      */
-    public VerificationApi startVerification(String sessionId) {
+    public VerificationApi startVerification(String sessionId) throws OnePassClientException {
         return new VerificationApi(personId, sessionId);
     }
 }

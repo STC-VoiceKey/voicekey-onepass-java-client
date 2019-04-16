@@ -2,6 +2,7 @@ package com.spechpro.biometric.onepass.client.api;
 
 import com.spechpro.biometric.onepass.client.dto.*;
 import com.spechpro.biometric.onepass.client.exceptions.ExceptionMapper;
+import com.spechpro.biometric.onepass.client.exceptions.OnePassClientException;
 import com.spechpro.biometric.onepass.client.rest.OnePassRestClient;
 import com.spechpro.biometric.onepass.client.util.DataConverter;
 import org.apache.http.Header;
@@ -50,7 +51,7 @@ public class VerificationApi {
     /**
      * Starts verification transaction to get transaction identifier and password to be read for verification
      */
-    private void getVerificationId() {
+    private void getVerificationId() throws OnePassClientException {
         try (CloseableHttpResponse response = OnePassRestClient.get().startVerification(personId,
                 new Header[]{new BasicHeader("X-Session-Id", sessionId)})) {
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -83,7 +84,7 @@ public class VerificationApi {
      * @param file sound record with pronounced verification password
      * @return true if sound data is successfully processed
      */
-    public boolean sendDynamicVerificationVoice(File file) {
+    public boolean sendDynamicVerificationVoice(File file) throws OnePassClientException {
         boolean sent = false;
         try (CloseableHttpResponse response =
                      OnePassRestClient.get().sendVerificationVoiceDynamicFile(
@@ -111,7 +112,7 @@ public class VerificationApi {
      * @param data sound record with pronounced verification password
      * @return true if sound data is successfully processed
      */
-    public boolean sendDynamicVerificationVoice(String data) {
+    public boolean sendDynamicVerificationVoice(String data) throws OnePassClientException {
         boolean sent = false;
         try (CloseableHttpResponse response =
                      OnePassRestClient.get().sendVerificationVoiceDynamicFile(
@@ -139,7 +140,7 @@ public class VerificationApi {
      * @param file sound record with pronounced verification password
      * @return true if sound data is successfully processed
      */
-    public boolean sendStaticVerificationVoice(File file) {
+    public boolean sendStaticVerificationVoice(File file) throws OnePassClientException {
         boolean sent = false;
         try (CloseableHttpResponse response =
                      OnePassRestClient.get().sendVerificationVoiceStaticFile(
@@ -166,7 +167,7 @@ public class VerificationApi {
      * @param file person's photo
      * @return true if photo is successfully processed
      */
-    public boolean sendVerificationPhoto(File file) {
+    public boolean sendVerificationPhoto(File file) throws OnePassClientException {
         boolean sent = false;
         try (CloseableHttpResponse response =
                      OnePassRestClient.get().sendPersonPhotoFile(
@@ -191,7 +192,7 @@ public class VerificationApi {
      *
      * @return verification score
      */
-    public double getDynamicVerificationScore() {
+    public double getDynamicVerificationScore() throws OnePassClientException {
         double result = 0;
         try (CloseableHttpResponse response = OnePassRestClient.get().getVerificationScore(sessionId,
                 new Header[]{new BasicHeader("X-Session-Id", sessionId),
@@ -212,7 +213,7 @@ public class VerificationApi {
         return result;
     }
 
-    public double getStaticVerificationScore() {
+    public double getStaticVerificationScore() throws OnePassClientException {
         double result = 0;
         try (CloseableHttpResponse response = OnePassRestClient.get().getVerificationScore(sessionId,
                 new Header[]{new BasicHeader("X-Session-Id", sessionId),
@@ -233,7 +234,7 @@ public class VerificationApi {
         return result;
     }
 
-    public boolean closeVerificationSession() {
+    public boolean closeVerificationSession() throws OnePassClientException {
         boolean closed = false;
         try (CloseableHttpResponse response = OnePassRestClient.get().closeVerificationSession(sessionId,
                 new Header[]{new BasicHeader("X-Session-Id", sessionId),

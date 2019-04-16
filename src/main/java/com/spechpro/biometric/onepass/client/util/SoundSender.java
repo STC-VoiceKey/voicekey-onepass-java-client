@@ -80,12 +80,10 @@ public class SoundSender {
     public static String convertBytesToBase64String(byte[] soundBytes){
         byte[] encoded = Base64.encodeBase64(soundBytes);
         String encodedString = new String(encoded);
-        System.out.println("Encoded bytes: " + encodedString);
         return encodedString;
     }
 
     public static void saveAudioFromURL(String sourcePath) {
-        //String sourcePath = "http://localhost:8080/test4/data/temp/file_undefined_1872067389446421012.wav";
         String filename = "F:\\Avaya\\sounds\\";
         String pathName = (new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date().getTime());
         filename += pathName.substring(0, 4) + "/" + pathName.substring(4, 6) + "/" + pathName.substring(6, 8) + "/" + pathName + "_verify.wav";

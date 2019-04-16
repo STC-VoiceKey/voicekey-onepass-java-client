@@ -12,7 +12,7 @@ public class StartTransactionRequestDto {
     public String transactionId;
 
     @JsonCreator
-    public StartTransactionRequestDto(@JsonProperty("transactionId") String transactionId){
+    public StartTransactionRequestDto(@JsonProperty("transaction_id") String transactionId){
         this.transactionId = transactionId;
     }
 

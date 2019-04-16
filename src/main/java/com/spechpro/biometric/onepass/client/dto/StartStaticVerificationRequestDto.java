@@ -16,7 +16,7 @@ public class StartStaticVerificationRequestDto {
 
     @JsonCreator
     public StartStaticVerificationRequestDto(
-            @JsonProperty("verificationId") String verificationId) {
+            @JsonProperty("verification_id") String verificationId) {
         this.verificationId = verificationId;
     }
 }

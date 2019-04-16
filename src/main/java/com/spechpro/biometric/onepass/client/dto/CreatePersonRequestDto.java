@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CreatePersonRequestDto {
 
-    @JsonProperty("personId")
+    @JsonProperty("person_id")
     public String personId;
 
     public CreatePersonRequestDto(String personId){

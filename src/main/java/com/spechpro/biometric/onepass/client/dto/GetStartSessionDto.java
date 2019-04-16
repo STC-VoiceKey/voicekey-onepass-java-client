@@ -14,8 +14,12 @@ public class GetStartSessionDto {
     @JsonProperty
     public String sessionId;
 
+    @JsonProperty
+    public String transactionId;
+
     @JsonCreator
-    public GetStartSessionDto(@JsonProperty("sessionId") String sessionId) {
+    public GetStartSessionDto(@JsonProperty("session_id") String sessionId,
+                              @JsonProperty("transaction_id") String transactionId) {
 
         this.sessionId = sessionId;
     }

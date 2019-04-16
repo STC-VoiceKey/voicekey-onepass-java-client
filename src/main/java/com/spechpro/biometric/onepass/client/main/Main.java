@@ -1,6 +1,7 @@
 package com.spechpro.biometric.onepass.client.main;
 
 import com.spechpro.biometric.onepass.client.api.*;
+import com.spechpro.biometric.onepass.client.exceptions.OnePassClientException;
 
 import java.io.File;
 import java.util.UUID;
@@ -58,7 +59,7 @@ public class Main {
     private static final String PROTOCOL = "https";
     private static final String HOST = "onepass.tech";
     private static final String PORT = null;
-    private static final String APPLICATION_ROOT = "devvkop/rest";
+    private static final String APPLICATION_ROOT = "vkonepass/rest";
 
     /**
      * Biometric platform login credentials
@@ -67,8 +68,8 @@ public class Main {
      * @value PASSWORD
      * @value DOMAIN_ID
      */
-    private static final String USERNAME = "admin";
-    private static final String PASSWORD = "QL0AFWMIX8NRZTKeof9cXsvbvu8=";
+    private static final String USERNAME = "vk_user";
+    private static final String PASSWORD = "123";
     private static final int DOMAIN_ID = 201;
 
     /**
@@ -80,7 +81,7 @@ public class Main {
      */
     public static final String PASSWORD_1 = "ноль один два три четыре пять шесть семь восемь девять";
     public static final String PASSWORD_2 = "девять восемь семь шесть пять четыре три два один ноль";
-    public static final String PASSWORD_3 = "пять три восемь девять семь один четыре шесть два ноль";
+    public static final String PASSWORD_3 = "четыре девять семь ноль восемь три шесть два один пять";
 
     public static void main(String[] args) {
 
@@ -96,7 +97,12 @@ public class Main {
          * with one session identifier.
          */
         SessionApi sessionApi = new SessionApi(USERNAME, PASSWORD, DOMAIN_ID);
-        UUID sessionId = sessionApi.startSession();
+        UUID sessionId = null;
+        try {
+            sessionId = sessionApi.startSession();
+        } catch (OnePassClientException ex) {
+            ex.printStackTrace();
+        }
 
         /**
          * PersonApi for person manipulations: create, delete a person,
@@ -115,11 +121,15 @@ public class Main {
          */
 
         RegistrationApi registrationApi = personApi.startRegistration(sessionId);
-        registrationApi.createPerson();
-        registrationApi.sendRegistrationPhoto(main.getFile("registrationPhoto.JPG"));
-        registrationApi.sendDynamicRegistrationVoice(PASSWORD_1, main.getFile("0123456789.wav"));
-        registrationApi.sendDynamicRegistrationVoice(PASSWORD_2, main.getFile("9876543210.wav"));
-        registrationApi.sendDynamicRegistrationVoice(PASSWORD_3, main.getFile("5389714620.wav"));
+        try {
+            registrationApi.createPerson();
+            registrationApi.sendRegistrationPhoto(main.getFile("registrationPhoto.JPG"));
+            registrationApi.sendDynamicRegistrationVoice(PASSWORD_1, main.getFile("reg1.wav"));
+            registrationApi.sendDynamicRegistrationVoice(PASSWORD_2, main.getFile("reg2.wav"));
+            registrationApi.sendDynamicRegistrationVoice(PASSWORD_3, main.getFile("reg3.wav"));
+        } catch (OnePassClientException ex) {
+            ex.printStackTrace();
+        }
 
         /**
          * VerificationApi for verification manipulations.
@@ -132,7 +142,12 @@ public class Main {
          * 6. close verification
          */
 
-        UUID verificationSessionId = sessionApi.startSession();
+        UUID verificationSessionId = null;
+        try {
+            verificationSessionId = sessionApi.startSession();
+        } catch (OnePassClientException ex) {
+            ex.printStackTrace();
+        }
         VerificationApi verificationApi = personApi.startVerification(verificationSessionId.toString());
         String verificationPassword = verificationApi.getVerificationPassword();
         /**
@@ -140,13 +155,20 @@ public class Main {
          * The verification password is generated for every verification transaction. That's why it's not
          * possible to give a real working example with recorded voice.
          * */
-        verificationApi.sendDynamicVerificationVoice(new File("verificationPassword"));
-        verificationApi.sendVerificationPhoto(new File("verificationPhoto.JPG"));
-        verificationApi.getDynamicVerificationScore();
-        verificationApi.closeVerificationSession();
+        try {
+            //Just an example. The generated password should be pronounce there.
+            // These throws BadRequestException {"reason":"POOR_PASSWORD","message":"Person 6948113 has poor password pronunciation."}
+            verificationApi.sendDynamicVerificationVoice(main.getFile("reg1.wav"));
+
+            verificationApi.sendVerificationPhoto(main.getFile("verificationPhoto.JPG"));
+            verificationApi.getDynamicVerificationScore();
+            verificationApi.closeVerificationSession();
+        } catch (OnePassClientException ex) {
+            ex.printStackTrace();
+        }
         /**
-        * ================================================
-        * */
+         * ================================================
+         * */
     }
 
     private File getFile(String fileName) {

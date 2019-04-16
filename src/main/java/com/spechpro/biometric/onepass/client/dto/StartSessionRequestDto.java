@@ -13,7 +13,7 @@ public class StartSessionRequestDto {
     @JsonProperty("password")
     public String password;
 
-    @JsonProperty("domainId")
+    @JsonProperty("domain_id")
     public int domainId;
 
     public StartSessionRequestDto(String username, String password, int domainId){

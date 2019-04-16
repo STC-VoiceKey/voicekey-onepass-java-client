@@ -27,7 +27,7 @@ public class OnePassRestClient {
         }
     }
 
-    public static OnePassRestClient get() {
+    public static OnePassRestClient get() throws NotInitializedException {
         if (instance != null) //here you can init Client
             return instance;
         else
@@ -46,8 +46,6 @@ public class OnePassRestClient {
     }
 
     public CloseableHttpResponse startSession(StartSessionRequestDto data) {
-        System.out.println(paths.getStartSessionUri());
-        System.out.println(data);
         return client.post(paths.getStartSessionUri(), data, null);
     }
 

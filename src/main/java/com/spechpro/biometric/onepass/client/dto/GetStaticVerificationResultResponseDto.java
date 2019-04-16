@@ -14,7 +14,7 @@ public class GetStaticVerificationResultResponseDto {
     public double score;
 
     @JsonCreator
-    public GetStaticVerificationResultResponseDto (@JsonProperty("staticVoice") double score) {
+    public GetStaticVerificationResultResponseDto (@JsonProperty("static_voice") double score) {
         this.score = score;
     }
 }

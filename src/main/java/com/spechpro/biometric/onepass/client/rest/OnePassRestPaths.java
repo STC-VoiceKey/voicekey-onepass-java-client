@@ -4,7 +4,7 @@ package com.spechpro.biometric.onepass.client.rest;
  * Created by sadurtinova on 09.09.2016.
  */
 public class OnePassRestPaths {
-    private static String session                               = "session";
+    private static String session                               = "vksession/rest/session";
     private static String person                                = "person/%s";                         // %s - person ID
     private static String createPerson                          = "registration/person/%s";            // %s - person ID
     private static String personVoiceDynamicFile                = "registration/voice/dynamic/file";   // %s - person ID
@@ -17,12 +17,15 @@ public class OnePassRestPaths {
     private static String closeVerification                     = "verification";                     // %s - session ID
 
     private String root;
+    private static String sessionRoot;
 
     public OnePassRestPaths(String protocol, String host, String port, String applicationRoot) {
         if (port == null) {
             root = String.format("%s://%s/%s/", protocol, host, applicationRoot);
+            sessionRoot = String.format("%s://%s/", protocol, host);
         } else {
             root = String.format("%s://%s:%s/%s/", protocol, host, port, applicationRoot);
+            sessionRoot = String.format("%s://%s/%s/", protocol, host, port);
         }
     }
 
@@ -31,7 +34,7 @@ public class OnePassRestPaths {
     }
 
     public String getStartSessionUri() {
-        return getWithRoot(session);
+        return getWithSessionRoot(session);
     }
 
     public String getCreatePersonUri(String personId) {
@@ -72,6 +75,10 @@ public class OnePassRestPaths {
 
     private String getWithRoot(String resourceUri) {
         return String.format("%s%s", root, resourceUri);
+    }
+
+    private String getWithSessionRoot(String sessionUri){
+        return String.format("%s%s", sessionRoot, sessionUri);
     }
 
 }

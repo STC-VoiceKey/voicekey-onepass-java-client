@@ -6,7 +6,7 @@
 
     <groupId>com.speechpro.biometric.platform.client</groupId>
     <artifactId>biometric-platform-onepass-client</artifactId>
-    <version>${env.PLATFORM_VERSION}</version>
+    <version>1.1.0</version>
 <build>
     <plugins>
         <plugin>
@@ -89,6 +89,7 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.12</version>
+        <scope>test</scope>
     </dependency>
 </dependencies>
 </project>
